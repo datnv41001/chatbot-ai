@@ -1,9 +1,11 @@
 import requests
 import os
+from functools import lru_cache
 
 PRODUCT_API_URL = os.getenv("PRODUCT_API_URL", "http://localhost:8000/api/products")
 
 
+@lru_cache(maxsize=128)
 def get_product_info(product_name=None, field=None, extra_params=None):
     """
     Truy vấn thông tin sản phẩm từ API sản phẩm.

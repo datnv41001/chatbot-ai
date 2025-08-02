@@ -4,7 +4,7 @@
 from langchain.tools import tool
 from modules.vector_store import search_product_vector
 from modules.quick_reply import get_quick_reply
-from modules.company_info_handler import handle_company_info_llm
+
 
 @tool
 def get_product_info(product_name: str) -> str:
@@ -69,5 +69,11 @@ def get_purchasing_guide(query: str = "hướng dẫn mua hàng") -> str:
 
 @tool
 def get_company_info(query: str) -> str:
-    """Sử dụng khi người dùng hỏi thông tin chung về công ty, cửa hàng, 'shop bán gì', 'bạn là ai'."""
-    return handle_company_info_llm(query, {})
+    """Sử dụng công cụ này khi người dùng hỏi về thông tin chung của shop, giới thiệu, địa chỉ, lĩnh vực kinh doanh. Ví dụ: 'shop bạn là ai?', 'giới thiệu về cửa hàng'.
+    Công cụ này sẽ trả về một đoạn văn bản chứa thông tin giới thiệu về cửa hàng vật liệu xây dựng DaiBoss.
+    """
+    return """
+    DaiBoss là cửa hàng chuyên cung cấp các loại vật liệu xây dựng và trang trí nội thất chất lượng cao. 
+    Các sản phẩm chính bao gồm: gạch ốp lát, sơn nước, thiết bị vệ sinh, keo dán gạch, và nhiều sản phẩm khác. 
+    Chúng tôi cam kết mang đến cho khách hàng sản phẩm chính hãng, giá cả cạnh tranh và dịch vụ tư vấn chuyên nghiệp.
+    """

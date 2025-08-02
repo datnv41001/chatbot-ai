@@ -4,6 +4,14 @@
 import os
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.agents import AgentExecutor, create_react_agent
+from langchain_community.cache import InMemoryCache
+from langchain.globals import set_llm_cache
+from dotenv import load_dotenv
+
+# --- Tối ưu hóa: Bật LLM Caching ---
+# Điều này sẽ lưu trữ các cặp (prompt, response) vào bộ nhớ.
+# Nếu LLM nhận được cùng một prompt, nó sẽ trả về kết quả đã lưu thay vì gọi lại API.
+set_llm_cache(InMemoryCache())
 from langchain_core.prompts import PromptTemplate
 from langchain.memory import ConversationSummaryBufferMemory
 
@@ -14,10 +22,14 @@ from modules.tools import (
     get_contact_info, get_purchasing_guide, get_company_info
 )
 
+load_dotenv()
 # 1. Khởi tạo LLM chính cho Agent
+# - temperature=0.1 để giảm tính ngẫu nhiên, giúp Agent hoạt động nhất quán hơn.
+# - convert_system_message_to_human=True là tham số quan trọng để tương thích tốt hơn với model Gemini.
 llm = ChatGoogleGenerativeAI(
-    model="gemini-1.5-pro-latest",
-    temperature=0.7, # Tăng sự sáng tạo nhưng vẫn giữ độ chính xác
+    model="gemini-1.5-pro-latest", 
+    temperature=0.1,
+    convert_system_message_to_human=True,
     google_api_key=os.getenv("GOOGLE_API_KEY")
 )
 
