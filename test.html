@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DaiBoss - Trợ lý ảo thông minh</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .header h1 {
+            font-size: 1.8em;
+            margin-bottom: 5px;
+            font-weight: 300;
+        }
+
+        .header p {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #f0f2f5;
+            min-height: 0;
+        }
+
+        .chat-messages {
+            flex: 1 1 auto;
+            min-height: 0;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+            max-width: 80%;
+        }
+
+        .message.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .message.bot {
+            align-self: flex-start;
+        }
+
+        .message-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .message.user .message-avatar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .message.bot .message-avatar {
+            background: #e4e6eb;
+            color: #65676b;
+        }
+
+        .message-content {
+            background: white;
+            padding: 12px 16px;
+            border-radius: 18px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            max-width: 100%;
+            word-wrap: break-word;
+        }
+
+        .message.user .message-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .message.bot .message-content {
+            background: white;
+            color: #1c1e21;
+        }
+
+        .message-time {
+            font-size: 0.7em;
+            color: #65676b;
+            margin-top: 5px;
+            text-align: center;
+        }
+
+        .message.user .message-time {
+            text-align: right;
+        }
+
+        .message.bot .message-time {
+            text-align: left;
+        }
+
+        .typing-indicator {
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+            align-self: flex-start;
+            max-width: 80%;
+        }
+
+        .typing-dots {
+            background: white;
+            padding: 12px 16px;
+            border-radius: 18px;
+            display: flex;
+            gap: 4px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #c1c1c1;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes typing {
+            0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+
+        .chat-input-container {
+            padding: 20px;
+            background: white;
+            border-top: 1px solid #e4e6eb;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .chat-input-wrapper {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+        }
+
+        .chat-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 12px 16px;
+            border-radius: 20px;
+            background: #f0f2f5;
+            font-size: 16px;
+            resize: none;
+            max-height: 120px;
+            min-height: 44px;
+        }
+
+        .send-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: transform 0.2s ease;
+        }
+
+        .send-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .send-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .quick-questions {
+            padding: 15px 20px;
+            background: white;
+            border-top: 1px solid #e4e6eb;
+            flex-shrink: 0;
+        }
+
+        .quick-questions h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        .question-buttons {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .question-btn {
+            background: #f0f2f5;
+            color: #1c1e21;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 16px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .question-btn:hover {
+            background: #e4e6eb;
+        }
+
+        .stats {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.95);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            font-size: 12px;
+            z-index: 1000;
+        }
+
+        .stat-item {
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                height: 100vh;
+                border-radius: 0;
+                margin: 0;
+            }
+
+            .header {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 1.5em;
+            }
+
+            .chat-messages {
+                padding: 15px;
+            }
+
+            .message {
+                max-width: 90%;
+            }
+
+            .chat-input-container {
+                padding: 15px;
+            }
+
+            .quick-questions {
+                padding: 10px 15px;
+            }
+
+            .stats {
+                position: static;
+                margin: 10px;
+                border-radius: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 DaiBoss AI Assistant</h1>
+            <p>Trợ lý ảo thông minh của cửa hàng DaiBoss</p>
+        </div>
+
+        <div class="chat-container">
+            <div class="chat-messages" id="chatMessages">
+                <!-- Messages will be added here -->
+            </div>
+
+            <div class="quick-questions">
+                <h3>💡 Câu hỏi thường gặp</h3>
+                <div class="question-buttons">
+                    <button class="question-btn" onclick="askQuickQuestion('Xin chào!')">👋 Chào hỏi</button>
+                    <button class="question-btn" onclick="askQuickQuestion('Thời gian giao hàng?')">🚚 Giao hàng</button>
+                    <button class="question-btn" onclick="askQuickQuestion('Chính sách đổi trả thế nào?')">🔄 Đổi trả</button>
+                    <button class="question-btn" onclick="askQuickQuestion('Giờ làm việc của shop?')">🕐 Giờ làm việc</button>
+                    <button class="question-btn" onclick="askQuickQuestion('Shop có hỗ trợ bảo hành không?')">🛡️ Bảo hành</button>
+                    <button class="question-btn" onclick="askQuickQuestion('Thanh toán như thế nào?')">💳 Thanh toán</button>
+                    <button class="question-btn" onclick="askQuickQuestion('Có ship cod không?')">📦 Ship COD</button>
+                    <button class="question-btn" onclick="askQuickQuestion('Giá cả thế nào?')">💰 Giá cả</button>
+                    <button class="question-btn" onclick="askQuickQuestion('Có khuyến mãi không?')">🎁 Khuyến mãi</button>
+                    <button class="question-btn" onclick="askQuickQuestion('Liên hệ shop?')">📞 Liên hệ</button>
+                </div>
+            </div>
+
+            <div class="chat-input-container">
+                <div class="chat-input-wrapper">
+                    <textarea 
+                        id="messageInput" 
+                        class="chat-input" 
+                        placeholder="Nhập tin nhắn..."
+                        rows="1"
+                    ></textarea>
+                    <button id="sendBtn" class="send-btn">📤</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="stats" id="stats" style="display: none;">
+        <div class="stat-item">
+            <span class="stat-label">⏱️ Thời gian:</span> <span id="responseTime">-</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">🏷️ Loại:</span> <span id="responseType">-</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">📊 Trạng thái:</span> <span id="responseStatus">-</span>
+        </div>
+    </div>
+
+  <script>
+        // Tự động sinh session và thông tin người dùng
+        let sessionId = localStorage.getItem('daiBoss_session_id');
+    if (!sessionId) {
+            sessionId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem('daiBoss_session_id', sessionId);
+        }
+
+        let username = localStorage.getItem('daiBoss_username');
+        if (!username) {
+            username = 'Khách_' + Math.random().toString(36).substr(2, 5);
+            localStorage.setItem('daiBoss_username', username);
+        }
+
+        const chatMessages = document.getElementById('chatMessages');
+        const messageInput = document.getElementById('messageInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const stats = document.getElementById('stats');
+
+        // Auto-resize textarea
+        messageInput.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+        });
+
+        // Send message on Enter (but allow Shift+Enter for new line)
+        messageInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        // Send button click
+        sendBtn.addEventListener('click', sendMessage);
+
+        function sendMessage() {
+            const message = messageInput.value.trim();
+            if (!message) return;
+
+            // Add user message
+            addMessage(message, 'user');
+            messageInput.value = '';
+            messageInput.style.height = 'auto';
+
+            // Show typing indicator
+            showTypingIndicator();
+
+            // Send to API
+            sendToAPI(message);
+        }
+
+        function addMessage(content, sender, time = new Date()) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar';
+            avatar.textContent = sender === 'user' ? '👤' : '🤖';
+
+            const messageContent = document.createElement('div');
+            messageContent.className = 'message-content';
+            messageContent.textContent = content;
+
+            const timeDiv = document.createElement('div');
+            timeDiv.className = 'message-time';
+            timeDiv.textContent = time instanceof Date
+                ? time.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })
+                : time;
+
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(messageContent);
+            messageDiv.appendChild(timeDiv);
+
+            chatMessages.appendChild(messageDiv);
+            // Cuộn mượt tới cuối khi có tin nhắn mới
+            if (chatMessages.lastElementChild) {
+                chatMessages.lastElementChild.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            }
+            // Lưu lịch sử chat
+            saveChatHistory(content, sender, time);
+        
+        }
+        function saveChatHistory(content, sender, time) {
+            let history = JSON.parse(localStorage.getItem('daiBoss_chat_history') || '[]');
+            history.push({ content, sender, time: (time instanceof Date) ? time.toISOString() : time });
+            // Giới hạn tối đa 100 tin nhắn
+            if (history.length > 100) history = history.slice(history.length - 100);
+            localStorage.setItem('daiBoss_chat_history', JSON.stringify(history));
+        }
+
+        function loadChatHistory() {
+            let history = JSON.parse(localStorage.getItem('daiBoss_chat_history') || '[]');
+            chatMessages.innerHTML = '';
+            history.forEach(msg => {
+                addMessage(msg.content, msg.sender, msg.time ? new Date(msg.time) : new Date());
+            });
+        }
+
+        function showTypingIndicator() {
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'typing-indicator';
+            typingDiv.id = 'typingIndicator';
+            
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar';
+            avatar.textContent = '🤖';
+
+            const dots = document.createElement('div');
+            dots.className = 'typing-dots';
+            dots.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+
+            typingDiv.appendChild(avatar);
+            typingDiv.appendChild(dots);
+            chatMessages.appendChild(typingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function hideTypingIndicator() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+
+        async function sendToAPI(message) {
+            const startTime = Date.now();
+            
+            const formData = new FormData();
+            formData.append('question', message);
+            formData.append('username', username);
+            formData.append('email', '');
+            formData.append('session_id', sessionId);
+
+            try {
+                const response = await fetch('http://localhost:8000/chat', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                const endTime = Date.now();
+                const responseTime = endTime - startTime;
+
+                // Hide typing indicator
+                hideTypingIndicator();
+
+                // Add bot response
+                addMessage(data.answer, 'bot');
+
+                // Update stats
+                updateStats(responseTime, data.type || 'unknown', responseTime < 1000 ? '🟢 Nhanh' : responseTime < 2000 ? '🟡 Trung bình' : '🔴 Chậm');
+
+            } catch (error) {
+                console.error('Error:', error);
+                hideTypingIndicator();
+                addMessage('❌ Có lỗi xảy ra khi gửi tin nhắn. Vui lòng thử lại.', 'bot');
+            }
+        }
+
+        function updateStats(time, type, status) {
+            document.getElementById('responseTime').textContent = `${time}ms`;
+            document.getElementById('responseType').textContent = type;
+            document.getElementById('responseStatus').textContent = status;
+            stats.style.display = 'block';
+            
+            // Hide stats after 5 seconds
+            setTimeout(() => {
+                stats.style.display = 'none';
+            }, 5000);
+        }
+
+        // Quick question function
+        async function askQuickQuestion(question) {
+            // Add user message
+            addMessage(question, 'user');
+            
+            // Show typing indicator
+            showTypingIndicator();
+
+            // Send to API
+            await sendToAPI(question);
+        }
+
+        // Hiển thị lịch sử chat khi tải trang
+        window.addEventListener('load', function() {
+            loadChatHistory();
+            // Nếu chưa có lịch sử, chào mừng lần đầu
+            let history = JSON.parse(localStorage.getItem('daiBoss_chat_history') || '[]');
+            if (history.length === 0) {
+                setTimeout(() => {
+                    addMessage('Xin chào! Tôi là trợ lý ảo của DaiBoss. Tôi có thể giúp gì cho bạn?', 'bot');
+                }, 500);
+            }
+        });
+  </script>
+</body>
+</html>

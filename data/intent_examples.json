@@ -1,0 +1,210 @@
+[
+    {
+      "intent": "gioi_thieu_shop",
+      "examples": [
+        "giới thiệu về shop",
+        "shop bán gì",
+        "bạn bán gì đó",
+        "shop có những mặt hàng nào",
+        "sản phẩm chính của shop là gì",
+        "daisan.vn là gì",
+        "cửa hàng này chuyên gì",
+        "tôi muốn biết thêm về daiboss",
+        "shop hoạt động trong lĩnh vực gì",
+        "giới thiệu doanh nghiệp"
+      ]
+    },
+    {
+      "intent": "hoi_gia",
+      "examples": [
+        "bao nhiêu tiền một bao xi măng",
+        "giá gạch là bao nhiêu",
+        "gạch này có đắt không",
+        "giá sản phẩm này",
+        "sơn nước loại này giá bao nhiêu",
+        "một thùng bao nhiêu tiền",
+        "tư vấn giá giúp tôi"
+      ]
+    },
+    {
+      "intent": "product_info",
+      "examples": [
+        "sản phẩm này có chống thấm không",
+        "mô tả gạch này giúp tôi",
+        "kích thước của loại này là bao nhiêu",
+        "đặc điểm gạch bóng kiếng",
+        "thành phần của keo dán này",
+        "loại này có trơn không",
+        "sơn này có màu nào"
+      ]
+    },
+    {
+      "intent": "quy_trinh_mua",
+      "examples": [
+        "mua hàng như thế nào",
+        "làm sao để đặt mua",
+        "quy trình mua gạch",
+        "shop bán như nào",
+        "mua online được không",
+        "hướng dẫn mua hàng",
+        "tôi muốn mua thì làm gì"
+      ]
+    },
+    {
+      "intent": "giao_hang",
+      "examples": [
+        "bao lâu thì giao hàng",
+        "shop có giao hàng không",
+        "giao về quận 9 mất mấy ngày",
+        "chính sách giao hàng",
+        "ship có miễn phí không",
+        "mất bao lâu để nhận",
+        "tôi ở tỉnh có giao không"
+      ]
+    },
+    {
+      "intent": "thanh_toan",
+      "examples": [
+        "thanh toán thế nào",
+        "shop có nhận COD không",
+        "có chuyển khoản được không",
+        "thanh toán khi nhận hàng",
+        "có hỗ trợ momo không",
+        "tôi muốn trả tiền trước",
+        "phương thức thanh toán"
+      ]
+    },
+    {
+      "intent": "bao_hanh",
+      "examples": [
+        "sản phẩm này có bảo hành không",
+        "chính sách bảo hành",
+        "gạch bị lỗi có được bảo hành không",
+        "bảo hành bao lâu",
+        "nếu hỏng thì xử lý sao",
+        "tư vấn bảo hành",
+        "hết hạn bảo hành thì sao"
+      ]
+    },
+    {
+      "intent": "doi_tra",
+      "examples": [
+        "muốn đổi sản phẩm",
+        "có được trả hàng không",
+        "chính sách đổi trả",
+        "tôi đặt nhầm thì sao",
+        "trả lại có mất phí không",
+        "đổi size được không",
+        "bị bể có đổi được không"
+      ]
+    },
+    {
+      "intent": "khuyen_mai",
+      "examples": [
+        "có khuyến mãi gì không",
+        "shop đang giảm giá gì",
+        "có chương trình ưu đãi không",
+        "giảm giá sản phẩm nào",
+        "mua nhiều có giảm không",
+        "khuyến mãi tháng này",
+        "có freeship không"
+      ]
+    },
+    {
+      "intent": "gio_lam_viec",
+      "examples": [
+        "giờ mở cửa thế nào",
+        "mấy giờ thì shop mở",
+        "shop có làm cuối tuần không",
+        "thời gian hoạt động",
+        "lịch làm việc của cửa hàng",
+        "có mở buổi tối không",
+        "giờ nào có thể ghé shop"
+      ]
+    },
+    {
+      "intent": "lien_he",
+      "examples": [
+        "liên hệ tư vấn",
+        "có số điện thoại không",
+        "hotline shop là gì",
+        "muốn gọi điện cho shop",
+        "gửi email thế nào",
+        "liên hệ facebook được không",
+        "tôi cần gặp nhân viên tư vấn"
+      ]
+    },
+    {
+      "intent": "kiem_kho",
+      "examples": [
+        "còn hàng không",
+        "gạch này có sẵn không",
+        "tồn kho bao nhiêu",
+        "kiểm tra hàng giúp tôi",
+        "loại này còn không",
+        "hết hàng chưa",
+        "gạch viglacera còn không"
+      ]
+    },
+    {
+        "intent": "greeting",
+        "examples": [
+          "xin chào",
+          "hello",
+          "hi shop",
+          "chào shop",
+          "shop ơi",
+          "cho mình hỏi",
+          "alo daiboss"
+        ]
+      },
+      {
+        "intent": "about_bot",
+        "examples": [
+          "bạn là ai",
+          "tên bạn là gì",
+          "ai tạo ra bạn",
+          "bạn là trợ lý gì",
+          "bạn làm được gì",
+          "bạn giúp tôi ra sao",
+          "mục đích của bạn là gì"
+        ]
+      },
+      {
+        "intent": "feedback",
+        "examples": [
+          "dịch vụ chưa tốt",
+          "tôi không hài lòng",
+          "mình muốn góp ý",
+          "feedback cho shop",
+          "phản hồi cho cửa hàng",
+          "cần cải thiện hỗ trợ",
+          "muốn báo lỗi"
+        ]
+      },
+      {
+        "intent": "dat_lich_hen",
+        "examples": [
+          "tôi muốn đặt lịch xem mẫu",
+          "có thể đặt hẹn không",
+          "muốn ghé shop lúc nào",
+          "đặt lịch tư vấn",
+          "có đặt trước được không",
+          "lên lịch gặp tư vấn",
+          "muốn gặp trực tiếp"
+        ]
+      },
+      {
+        "intent": "huong_dan_su_dung",
+        "examples": [
+          "hướng dẫn sử dụng sản phẩm",
+          "dùng gạch này thế nào",
+          "thi công ra sao",
+          "hướng dẫn thi công",
+          "dùng sơn này như nào",
+          "cách trộn vữa",
+          "lắp đặt lavabo"
+        ]
+      }
+  ]
+  

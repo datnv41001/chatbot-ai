@@ -1,0 +1,25 @@
+# Core Framework
+fastapi
+uvicorn[standard]
+python-multipart
+
+# AI & Machine Learning
+langchain
+langchain-google-genai
+langchain-community
+google-generativeai
+
+# Database
+sqlmodel
+
+# Environment & Utils
+python-dotenv
+requests
+
+# Optional: For better performance
+numpy
+pandas
+
+# Development & Testing
+pytest
+pytest-asyncio
