@@ -7,6 +7,8 @@ import os
 from modules.models import init_db
 from modules.chatbot import ask_question, init_chatbot
 from modules.storage import save_chat, save_user_if_not_exist, get_chat_history
+from fastapi.responses import FileResponse
+
 
 # 🚀 Khởi tạo ứng dụng FastAPI
 app = FastAPI()
