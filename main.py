@@ -60,3 +60,13 @@ async def history(session_id: str):
         return JSONResponse(content=history)
     except Exception as e:
         return JSONResponse(content={"error": str(e)}, status_code=500)
+
+
+@app.get("/")
+async def serve_frontend():
+    return FileResponse("test.html") 
+
+if __name__ == "__main__":
+    import uvicorn
+    port = int(os.environ.get("PORT", 10000))
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=False)
