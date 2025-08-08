@@ -2,7 +2,7 @@ import requests
 import os
 from functools import lru_cache
 
-PRODUCT_API_URL = os.getenv("PRODUCT_API_URL", "https://unopim.daisan.asia/api/shopify/get-product-with-inventory")
+PRODUCT_API_URL = os.getenv("PRODUCT_API_URL", "http://103.63.213.47:8000/api/shopify-products/search")
 
 
 @lru_cache(maxsize=128)
@@ -17,12 +17,12 @@ def get_product_info(product_name=None, field=None, extra_params=None):
     try:
         params = {}
         if product_name:
-            params['title'] = product_name
-        if field:
-            params['field'] = field
+            params['q'] = product_name
         if extra_params:
             params.update(extra_params)
+        print(f"[PRODUCT_API] Gọi API: {PRODUCT_API_URL} | params: {params}")
         resp = requests.get(PRODUCT_API_URL, params=params, timeout=5)
+        print(f"[PRODUCT_API] Status: {resp.status_code} | Response: {resp.text[:300]}{'...' if len(resp.text)>300 else ''}")
         if resp.status_code == 200:
             data = resp.json()
             # Trường hợp API trả về danh sách sản phẩm trong 'products'
@@ -119,6 +119,8 @@ def get_product_info(product_name=None, field=None, extra_params=None):
             else:
                 return "Không tìm thấy thông tin sản phẩm phù hợp."
         else:
+            print(f"[PRODUCT_API ERROR] Lỗi status code: {resp.status_code} | URL: {PRODUCT_API_URL} | params: {params} | Response: {resp.text}")
             return f"Lỗi truy vấn API sản phẩm: {resp.status_code}"
     except Exception as e:
+        print(f"[PRODUCT_API EXCEPTION] Không kết nối được tới API! URL: {PRODUCT_API_URL} | params: {params} | Error: {e}")
         return f"Không kết nối được tới hệ thống sản phẩm. Vui lòng thử lại sau. ({e})"
